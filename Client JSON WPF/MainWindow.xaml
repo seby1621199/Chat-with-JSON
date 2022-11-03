@@ -1,0 +1,50 @@
+﻿<Window x:Class="Client_JSON_WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:local="clr-namespace:Client_JSON_WPF"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800" WindowStyle="None" AllowsTransparency="True" Background="Transparent" MouseDown="Window_MouseDown">
+    <materialDesign:Card Margin="10,10,10,10" UniformCornerRadius="15" Background="#FF302F2F">
+        <Grid x:Name="grid">
+            <Grid Width="400" HorizontalAlignment="Left" Margin="255,30,0,65">
+                <Border BorderThickness="1" BorderBrush="#FF6E7373" CornerRadius="10">
+                    <ScrollViewer  VerticalScrollBarVisibility="Auto" Foreground="#FF737373">
+                        <StackPanel x:Name="chat" Margin="10"/>
+                    </ScrollViewer>
+                </Border>
+            </Grid>
+            <Grid HorizontalAlignment="Left" VerticalAlignment="Center" Width="250" Height="{Binding ActualHeight, ElementName=grid, Mode=OneWay}">
+                <StackPanel Margin="20,0,0,60">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="0,0,0,30" HorizontalAlignment="Left">
+                        <materialDesign:PackIcon Kind="Wireless" Width="35" Height="35" Foreground="White" VerticalAlignment="Bottom" Margin="0,0,5,0"/>
+                        <TextBlock TextWrapping="Wrap" Text="Server" TextAlignment="Center" Foreground="WhiteSmoke" FontSize="30" FontWeight="Bold" FontFamily="Yu Gothic UI" Margin="0,10,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel x:Name="cnc_message" Visibility="Collapsed">
+                        <TextBlock Text="Connected" Foreground="#FF73C96C" HorizontalAlignment="Left" FontFamily="Microsoft YaHei" FontSize="12" Margin="0,0,0,0" FontWeight="Bold"/>
+                        <TextBlock Text="Users:" Foreground="#FFEBEBEB" HorizontalAlignment="Left" FontFamily="Yu Gothic Medium" FontSize="12"/>
+                    </StackPanel>
+                    <StackPanel x:Name="clienti" Margin="10,0,0,0">
+                        <!--Hidden primul-->
+                        <TextBlock Text="Sebi" Foreground="#FFEBEBEB" HorizontalAlignment="Left" Visibility="Collapsed"/>
+                    </StackPanel>
+                </StackPanel>
+                <Button x:Name="Btn_Connect" Background="{x:Null}" BorderBrush="{x:Null}"  Padding="16,4,16,4" Click="Btn_Connect_Click" Margin="20,338,178,10" VerticalAlignment="Bottom">
+                    <materialDesign:PackIcon  Kind="Wireless" HorizontalAlignment="Right" Height="20" Width="20" Foreground="#DDC5BBBB"/>
+                </Button>
+                <TextBox x:Name="TxtUsername" TextWrapping="Wrap" Margin="105,345,25,10" Foreground="#FFCBCBCB" BorderBrush="#FF514C4C" materialDesign:HintAssist.Hint="Nickname" Padding="5,4,0,4" VerticalAlignment="Bottom"/>
+            </Grid>
+            <StackPanel x:Name="send_area" Margin="0,0,5,5" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="425">
+                <TextBox x:Name="txtMessage" Width="350" FontSize="14" Height="30" Margin="10,10,10,10" TextWrapping="Wrap" VerticalAlignment="Center" Background="#FF302F2F" BorderBrush="#FF514C4C" Foreground="#FFD7CBCB" BorderThickness="0,0,0,2" Padding="10,4,0,0" materialDesign:HintAssist.Hint="Message
+                         " MaxLength="30" MaxLines="1" />
+                <Button x:Name="Btn_Send" Background="{x:Null}" BorderBrush="{x:Null}"  Padding="16,4,16,4" Height="32" Width="52" Click="Btn_Send_Click">
+                    <materialDesign:PackIcon x:Name="IconSend" Kind="Send" HorizontalAlignment="Right" Height="20" Width="20" Foreground="#DDC5BBBB"/>
+                </Button>
+            </StackPanel>
+
+        </Grid>
+
+    </materialDesign:Card>
+</Window>
