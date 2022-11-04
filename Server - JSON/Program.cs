@@ -70,7 +70,14 @@ namespace Server___JSON
                 string messagejson = Encoding.UTF8.GetString(data, 0, bytes);
                 Message message = JsonConvert.DeserializeObject<Message>(messagejson);
                 Console.WriteLine(message.from + ": " + message.message);
-                Program.send_to_all(message);
+                if (message.to != "all")
+                {
+                    Program.send_to_user(message);
+                }
+                else
+                {
+                    Program.send_to_all(message);
+                }
             }
         }
         #endregion
@@ -151,5 +158,17 @@ namespace Server___JSON
             }
         }
 
+        public static void send_to_user(Message message)
+        {
+            foreach (Client client in clients)
+            {
+                if (client.username == message.to)
+                {
+                    NetworkStream stream = client.client.GetStream();
+                    stream.Write(encode(Convert(message)), 0, encode(Convert(message)).Length);
+                    stream.Flush();
+                }
+            }
+        }
     }
 }

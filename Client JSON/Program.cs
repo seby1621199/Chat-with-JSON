@@ -108,7 +108,7 @@ namespace Client_JSON
         }
         #endregion
 
-        static void Main(string[] args)
+        static void Main()
         {
 
             Console.Title = "Client";
@@ -129,9 +129,6 @@ namespace Client_JSON
                 }
 
             }
-
-
-            Console.ReadKey();
 
         }
     }

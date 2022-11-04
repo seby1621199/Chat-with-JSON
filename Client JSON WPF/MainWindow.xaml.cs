@@ -31,6 +31,7 @@ namespace Client_JSON_WPF
         static List<string> usernames = new();
         public static Message message = new();
         public static TcpClient client = new();
+        public static PrivateMessage privateMessage = null;
 
         public MainWindow()
         {
@@ -61,7 +62,8 @@ namespace Client_JSON_WPF
             NetworkStream s = c.GetStream();
             Message message = new()
             {
-                message = m
+                message = m,
+                to = "all"
             };
             s.Write(Encode(ConvertObjToString(message)), 0, Encode(ConvertObjToString(message)).Length);
         }
@@ -126,6 +128,21 @@ namespace Client_JSON_WPF
                     int bytes = stream.Read(data, 0, data.Length);
                     string message = Encoding.UTF8.GetString(data, 0, bytes);
                     Message m = ConvertStringToObj(message);
+                    if (m.head == "")
+                    {
+                        //Console.WriteLine(m.from + ": " + m.message);
+
+                        Dispatcher.Invoke(() =>
+                        {
+                            TextBlock textBlock = new()
+                            {
+                                Text = $"{m.from}: {m.message}",
+                                FontSize = 12,
+                                Foreground = Brushes.White
+                            };
+                            chat.Children.Add(textBlock);
+                        });
+                    }
                     if (m.head == "Connected")
                     {
                         //TODO: Aici trebuie sa adaugam userul in lista de useri
@@ -138,23 +155,38 @@ namespace Client_JSON_WPF
                                 FontSize = 12,
                                 Foreground = Brushes.White
                             };
+                            textBlock.MouseLeftButtonDown += new MouseButtonEventHandler(User_Select);
                             clienti.Children.Add(textBlock);
                         });
                     }
                     else
                     {
-
-                        Console.WriteLine(m.from + ": " + m.message);
-
-                        Dispatcher.Invoke(() =>
+                        Application.Current.Dispatcher.Invoke((Action)delegate
                         {
-                            TextBlock textBlock = new()
+                            if (m.head == "Private Message Start")
                             {
-                                Text = $"{m.from}: {m.message}",
-                                FontSize = 12,
-                                Foreground = Brushes.White
-                            };
-                            chat.Children.Add(textBlock);
+                                privateMessage = new(m.to, m.from, false);
+                                privateMessage.Show();
+                                TextBlock textBlock = new()
+                                {
+                                    Text = $"{m.from}: {m.message}",
+                                    FontSize = 12,
+                                    Foreground = Brushes.White
+                                };
+                                //chat.Children.Add(textBlock);
+                                privateMessage.chat.Children.Add(textBlock);
+                            }
+                            if (m.head == "Private Message")
+                            {
+                                TextBlock textBlock = new()
+                                {
+                                    Text = $"{m.from}: {m.message}",
+                                    FontSize = 12,
+                                    Foreground = Brushes.White
+                                };
+                                privateMessage.chat.Children.Add(textBlock);
+                            }
+
                         });
                     }
                 }
@@ -169,8 +201,7 @@ namespace Client_JSON_WPF
         {
             var user = (TextBlock)sender;
             message.to = user.Text;
-            txtMessage.Text = message.to;
-            PrivateMessage privateMessage = new(user.Text);
+            privateMessage = new(message.from, message.to);
             privateMessage.Show();
 
         }
@@ -194,6 +225,8 @@ namespace Client_JSON_WPF
                     //byte[] data = Encoding.UTF8.GetBytes(username + ": " + txtMessage.Text);
                     //send_message(username + ": " + txtMessage.Text);
                     message.message = txtMessage.Text;
+                    message.to = "all";
+                    message.head = "";
                     Send(client, message);
                     txtMessage.Text = "";
                 }

@@ -8,12 +8,18 @@
          xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         Title="PrivateMessage" Height="500" Width="600
         " WindowStyle="None" AllowsTransparency="True" Background="Transparent">
-    <materialDesign:Card UniformCornerRadius="15" Margin="15" Background="#FF302F2F">
+    <materialDesign:Card UniformCornerRadius="15" Margin="15" Background="#FF302F2F" MouseDown="Window_MouseDown">
+        <Grid>
+            
+            <Button x:Name="Close_Button" Background="{x:Null}" BorderBrush="{x:Null}"  Padding="16,4,16,4" Height="32" Width="52"  HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,10,0" Click="Close_Button_Click">
+            <materialDesign:PackIcon x:Name="Close_Icon" Kind="Close" HorizontalAlignment="Right" Height="20" Width="20" Foreground="#DDC5BBBB"/>
+        </Button>
         <StackPanel>
             <StackPanel>
-                <TextBlock x:Name="User_Txt" TextWrapping="Wrap" Text="Private Message To {user}" TextAlignment="Center" Foreground="WhiteSmoke" FontSize="30" FontWeight="Bold" FontFamily="Yu Gothic UI" Margin="0,20,0,20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-            </StackPanel>
-            <Border Margin="10,10,10,10" MinWidth="300" MinHeight="300" Height="200" Width="400" BorderThickness="1,1,1,1" BorderBrush="#FF6E7373" CornerRadius="15">
+                <TextBlock x:Name="User_Txt" TextWrapping="Wrap" Text="Private Message To {user}" TextAlignment="Center" Foreground="WhiteSmoke" FontSize="30" FontWeight="Bold" FontFamily="Yu Gothic UI" Margin="0,20,0,20" VerticalAlignment="Center" HorizontalAlignment="Center" DataContextChanged="User_Txt_DataContextChanged"/>
+                    <TextBlock x:Name="From_Txt" TextWrapping="Wrap" Text="Private Message To {user}" TextAlignment="Center" Foreground="WhiteSmoke" FontWeight="Bold" FontFamily="Yu Gothic UI" Margin="0,0,0,20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                </StackPanel>
+            <Border Margin="10,10,10,10" MinWidth="300" MinHeight="265" Height="265" Width="400" BorderThickness="1,1,1,1" BorderBrush="#FF6E7373" CornerRadius="15">
                 <ScrollViewer  VerticalScrollBarVisibility="Auto" Foreground="#FF737373">
                     <StackPanel x:Name="chat" Margin="10"/>
                 </ScrollViewer>
@@ -24,9 +30,8 @@
                 <Button x:Name="Btn_Send" Background="{x:Null}" BorderBrush="{x:Null}"  Padding="16,4,16,4" Height="32" Width="52" Click="Btn_Send_Click">
                     <materialDesign:PackIcon x:Name="IconSend" Kind="Send" HorizontalAlignment="Right" Height="20" Width="20" Foreground="#DDC5BBBB"/>
                 </Button>
-
-
             </StackPanel>
         </StackPanel>
+        </Grid>
     </materialDesign:Card>
 </Window>
