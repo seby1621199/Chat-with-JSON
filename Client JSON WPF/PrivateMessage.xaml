@@ -25,8 +25,7 @@
                 </ScrollViewer>
             </Border>
             <StackPanel x:Name="send_area" Margin="0,0,5,5" Orientation="Horizontal" HorizontalAlignment="Center" Width="425" Height="50">
-                <TextBox x:Name="txtMessage" Width="350" FontSize="14" Height="30" Margin="10,10,10,10" TextWrapping="Wrap" VerticalAlignment="Center" Background="#FF302F2F" BorderBrush="#FF514C4C" Foreground="#FFD7CBCB" BorderThickness="0,0,0,2" Padding="10,4,0,0" materialDesign:HintAssist.Hint="Message
-                         " MaxLength="30" MaxLines="1" />
+                <TextBox x:Name="txtMessage" Width="350" FontSize="14" Height="30" Margin="10,10,10,10" TextWrapping="Wrap" VerticalAlignment="Center" Background="#FF302F2F" BorderBrush="#FF514C4C" Foreground="#FFD7CBCB" BorderThickness="0,0,0,2" Padding="10,4,0,0" materialDesign:HintAssist.Hint="Message" MaxLength="30" MaxLines="1" />
                 <Button x:Name="Btn_Send" Background="{x:Null}" BorderBrush="{x:Null}"  Padding="16,4,16,4" Height="32" Width="52" Click="Btn_Send_Click">
                     <materialDesign:PackIcon x:Name="IconSend" Kind="Send" HorizontalAlignment="Right" Height="20" Width="20" Foreground="#DDC5BBBB"/>
                 </Button>

@@ -23,11 +23,13 @@ namespace Client_JSON_WPF
     }
 
 
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
+        static List<PrivateMessage> privateMessages = new List<PrivateMessage>();
         static List<string> usernames = new();
         public static Message message = new();
         public static TcpClient client = new();
@@ -96,18 +98,24 @@ namespace Client_JSON_WPF
             NetworkStream stream = c.GetStream();
             byte[] data = new byte[1024];
             int bytes = stream.Read(data, 0, data.Length);
-            string message = Encoding.UTF8.GetString(data, 0, bytes);
-            usernames = message.Split(',').ToList();
+            string message_usernames = Encoding.UTF8.GetString(data, 0, bytes);
+            usernames = message_usernames.Split(',').ToList();
             foreach (string user in usernames)
             {
                 Dispatcher.Invoke(() =>
                 {
                     TextBlock textBlock = new()
                     {
+                        Name = user,
                         Text = user,
                         FontSize = 12,
                         Foreground = Brushes.White,
                     };
+                    if (user != message.from)
+                        textBlock.MouseEnter +=
+                        (sender, e) => { textBlock.Foreground = Brushes.Gray; };
+                    textBlock.MouseLeave +=
+                    (sender, e) => { textBlock.Foreground = Brushes.White; };
                     textBlock.MouseLeftButtonDown += new MouseButtonEventHandler(User_Select);
                     clienti.Children.Add(textBlock);
                 });
@@ -128,6 +136,49 @@ namespace Client_JSON_WPF
                     int bytes = stream.Read(data, 0, data.Length);
                     string message = Encoding.UTF8.GetString(data, 0, bytes);
                     Message m = ConvertStringToObj(message);
+                    if (m.head == "Disconnected")
+                    {
+                        Dispatcher.Invoke(() =>
+                        {
+                            TextBlock textBlock = new()
+                            {
+                                Text = m.message + " s-a deconectat",
+                                FontSize = 12,
+                                Foreground = Brushes.White,
+                            };
+                            chat.Children.Add(textBlock);
+                        });
+                        usernames.Remove(m.message);
+                        Dispatcher.Invoke(() =>
+                        {
+                            TextBlock t = clienti.Children.OfType<TextBlock>().FirstOrDefault(x => x.Name == m.message);
+                            clienti.Children.Remove(t);
+                            if (privateMessage != null)
+                            {
+                                if (privateMessage.Destinatar == m.message)
+                                    privateMessage.Close();
+                            }
+                        });
+                        continue;
+
+
+
+                    }
+                    if (m.head == "Connected Message")
+                    {
+                        //Console.WriteLine(m.from + ": " + m.message);
+
+                        Dispatcher.Invoke(() =>
+                        {
+                            TextBlock textBlock = new()
+                            {
+                                Text = DateTime.Now.ToString("HH:mm") + "  " + $"{m.message}",
+                                FontSize = 12,
+                                Foreground = Brushes.White
+                            };
+                            chat.Children.Add(textBlock);
+                        });
+                    }
                     if (m.head == "")
                     {
                         //Console.WriteLine(m.from + ": " + m.message);
@@ -151,6 +202,7 @@ namespace Client_JSON_WPF
                         {
                             TextBlock textBlock = new()
                             {
+                                Name = m.from,
                                 Text = m.from,
                                 FontSize = 12,
                                 Foreground = Brushes.White
@@ -167,6 +219,7 @@ namespace Client_JSON_WPF
                             {
                                 privateMessage = new(m.to, m.from, false);
                                 privateMessage.Show();
+
                                 TextBlock textBlock = new()
                                 {
                                     Text = $"{m.from}: {m.message}",
@@ -203,7 +256,6 @@ namespace Client_JSON_WPF
             message.to = user.Text;
             privateMessage = new(message.from, message.to);
             privateMessage.Show();
-
         }
 
 
@@ -235,12 +287,11 @@ namespace Client_JSON_WPF
             {
                 MessageBox.Show("Not connected to server");
             }
-
         }
         private void Connect()
         {
             if (!client.Connected)
-                client.Connect(IPAddress.Parse("192.168.1.105"), 7891);
+                client.Connect(IPAddress.Parse("192.168.1.108"), 7891);
             else
                 MessageBox.Show("Already connected to server");
             if (TxtUsername.Text != "")
@@ -251,16 +302,13 @@ namespace Client_JSON_WPF
             {
                 message.from = Environment.UserName;
             }
-
-
         }
 
         private void Btn_Connect_Click(object sender, RoutedEventArgs e)
         {
             if (!client.Connected)
-                Connect();
-            if (client.Connected)
             {
+                Connect();
                 Dispatcher.Invoke(() => //pentru eroarea legata de thread/task cu componentele cu UI
                 {
                     TextBlock textBlock = new()
@@ -277,31 +325,11 @@ namespace Client_JSON_WPF
                 Get_users(client);
                 cnc_message.Visibility = Visibility.Visible;
                 Task.Run(() => { Read(client); });
-
             }
-
-
-
-
-
-            void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+            else
             {
-                if (e.Key == Key.Enter)
-                {
-                    Btn_Send_Click(sender, e);
-                }
 
-            }
-
-            void TxtUsername_KeyDown(object sender, KeyEventArgs e)
-            {
-                if (e.Key == Key.Enter)
-                {
-                    if (TxtUsername.Text != "")
-                    {
-                        message.from = TxtUsername.Text;
-                    }
-                }
+                MessageBox.Show("Already connected to server");
 
             }
         }
@@ -310,5 +338,24 @@ namespace Client_JSON_WPF
         {
 
         }
+
+        private void Close_Button_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+
+        }
+
+        private void TxtMessage_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                Btn_Send_Click(sender, e);
+            }
+        }
+
+
+
+
+
     }
 }

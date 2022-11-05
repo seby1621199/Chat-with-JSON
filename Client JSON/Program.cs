@@ -113,7 +113,7 @@ namespace Client_JSON
 
             Console.Title = "Client";
             TcpClient client = new TcpClient();
-            client.Connect(IPAddress.Parse("192.168.1.105"), 7891);
+            client.Connect(IPAddress.Parse("192.168.0.191"), 7891);
             send_username(client);
             get_users(client);
             Task.Run(() => { read(client); });

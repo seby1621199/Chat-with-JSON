@@ -1,7 +1,4 @@
-﻿using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -13,10 +10,10 @@ namespace Client_JSON_WPF
     /// </summary>
     public partial class PrivateMessage : Window
     {
-        string Destinatar = "";
+        public string Destinatar = "";
         string Expeditor = "";
         bool IsFirstMessage = true;
-        public PrivateMessage(string from, string to,bool first=true)
+        public PrivateMessage(string from, string to, bool first = true)
         {
             InitializeComponent();
             Destinatar = to;
@@ -24,7 +21,7 @@ namespace Client_JSON_WPF
             Expeditor = from;
             IsFirstMessage = first;
             From_Txt.Text = Expeditor;
-           // Task.Run(() => { Read(); });
+            // Task.Run(() => { Read(); });
 
         }
 
@@ -58,7 +55,7 @@ namespace Client_JSON_WPF
                 chat.Children.Add(textBlock);
             }
         }
-        
+
 
 
         #region Window 

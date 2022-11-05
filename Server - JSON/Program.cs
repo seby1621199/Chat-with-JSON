@@ -29,7 +29,7 @@ namespace Server___JSON
          */
 
 
-        public void get_username()
+        public void Get_username()
         {
             byte[] data = new byte[1024];
             stream = client.GetStream();
@@ -38,11 +38,11 @@ namespace Server___JSON
             Message message = JsonConvert.DeserializeObject<Message>(messagejson);
             this.username = message.from;
             message.head = "Connected";
-            Program.send_to_all(message);
-            message.head = "";
+            Program.Send_to_all(message);
+            message.head = "Connected Message";
             message.from = "Server";
             message.message = "User " + username + " connected";
-            Program.send_to_all(message);
+            Program.Send_to_all(message);
 
             Console.WriteLine("User connected! " + this.username);
         }
@@ -61,24 +61,43 @@ namespace Server___JSON
         #endregion
 
         #region Read
-        public void read()
+        public void Read()
         {
+
+            while (true)
             {
-                byte[] data = new byte[1024];
-                stream = client.GetStream();
-                int bytes = stream.Read(data, 0, data.Length);
-                string messagejson = Encoding.UTF8.GetString(data, 0, bytes);
-                Message message = JsonConvert.DeserializeObject<Message>(messagejson);
-                Console.WriteLine(message.from + ": " + message.message);
-                if (message.to != "all")
+                try
                 {
-                    Program.send_to_user(message);
+                    byte[] data = new byte[1024];
+                    stream = client.GetStream();
+                    int bytes = stream.Read(data, 0, data.Length);
+                    string messagejson = Encoding.UTF8.GetString(data, 0, bytes);
+                    Message message = JsonConvert.DeserializeObject<Message>(messagejson);
+                    Console.WriteLine(message.from + ": " + message.message);
+                    if (message.to != "all")
+                    {
+                        Program.Send_to_user(message);
+                    }
+                    else
+                    {
+                        Program.Send_to_all(message);
+                    }
                 }
-                else
+                catch (Exception e)
                 {
-                    Program.send_to_all(message);
+                    Program.clients.Remove(this);
+                    Console.WriteLine("User disconnected");
+                    Message message = new Message
+                    {
+                        head = "Disconnected",
+                        from = "Server",
+                        message = this.username
+                    };
+                    Program.Send_to_all(message);
+                    break;
                 }
             }
+
         }
         #endregion
     }
@@ -103,29 +122,29 @@ namespace Server___JSON
         {
             return JsonConvert.SerializeObject(message);
         }
-        public static byte[] encode(string m)
+        public static byte[] Encode(string m)
         {
             byte[] bytes = Encoding.UTF8.GetBytes(m);
             return bytes;
         }
 
-        public static void send_to_all(Message m)
+        public static void Send_to_all(Message m)
         {
 
             {
                 foreach (Client client in clients)
                 {
                     NetworkStream stream = client.client.GetStream();
-                    stream.Write(encode(Convert(m)), 0, encode(Convert(m)).Length);
+                    stream.Write(Encode(Convert(m)), 0, Encode(Convert(m)).Length);
                     stream.Flush();
                 }
             }
         }
-        public static void send(TcpClient c, Message message)
+        public static void Send(TcpClient c, Message message)
         {
             NetworkStream s = c.GetStream();
             string m = Convert(message);
-            s.Write(encode(m), 0, encode(m).Length);
+            s.Write(Encode(m), 0, Encode(m).Length);
         }
 
         #endregion
@@ -134,7 +153,7 @@ namespace Server___JSON
         {
 
             Console.Title = "Server";
-            TcpListener listener = new TcpListener(IPAddress.Parse("192.168.1.105"), 7891);
+            TcpListener listener = new TcpListener(IPAddress.Parse("192.168.1.108"), 7891);
             listener.Start();
 
 
@@ -148,24 +167,24 @@ namespace Server___JSON
                 Task.Run(() =>
                {
                    Client client = new Client(tcpclient);
-                   client.get_username();
+                   client.Get_username();
                    clients.Add(client);
                    client.Send_usernames();
                    Console.WriteLine(client.username);
-                   while (true)
-                       client.read();
+                   client.Read();
+
                });
             }
         }
 
-        public static void send_to_user(Message message)
+        public static void Send_to_user(Message message)
         {
             foreach (Client client in clients)
             {
                 if (client.username == message.to)
                 {
                     NetworkStream stream = client.client.GetStream();
-                    stream.Write(encode(Convert(message)), 0, encode(Convert(message)).Length);
+                    stream.Write(Encode(Convert(message)), 0, Encode(Convert(message)).Length);
                     stream.Flush();
                 }
             }
