@@ -112,11 +112,11 @@ namespace Client_JSON_WPF
                         Foreground = Brushes.White,
                     };
                     if (user != message.from)
-                        textBlock.MouseEnter +=
-                        (sender, e) => { textBlock.Foreground = Brushes.Gray; };
-                    textBlock.MouseLeave +=
-                    (sender, e) => { textBlock.Foreground = Brushes.White; };
-                    textBlock.MouseLeftButtonDown += new MouseButtonEventHandler(User_Select);
+                    {
+                        textBlock.MouseEnter += (sender, e) => { textBlock.Foreground = Brushes.Gray; };
+                        textBlock.MouseLeave += (sender, e) => { textBlock.Foreground = Brushes.White; };
+                        textBlock.MouseLeftButtonDown += new MouseButtonEventHandler(User_Select);
+                    }
                     clienti.Children.Add(textBlock);
                 });
             }
@@ -153,10 +153,12 @@ namespace Client_JSON_WPF
                         {
                             TextBlock t = clienti.Children.OfType<TextBlock>().FirstOrDefault(x => x.Name == m.message);
                             clienti.Children.Remove(t);
-                            if (privateMessage != null)
+                            //TODO: remove from private messages
+                            PrivateMessage p = privateMessages.FirstOrDefault(x => x.Destinatar == m.message);
+                            if (p != null)
                             {
-                                if (privateMessage.Destinatar == m.message)
-                                    privateMessage.Close();
+                                privateMessages.Remove(p);
+                                p.Close();
                             }
                         });
                         continue;
@@ -176,7 +178,9 @@ namespace Client_JSON_WPF
                                 FontSize = 12,
                                 Foreground = Brushes.White
                             };
+
                             chat.Children.Add(textBlock);
+
                         });
                     }
                     if (m.head == "")
@@ -208,40 +212,41 @@ namespace Client_JSON_WPF
                                 Foreground = Brushes.White
                             };
                             textBlock.MouseLeftButtonDown += new MouseButtonEventHandler(User_Select);
+                            textBlock.MouseEnter += (sender, e) => { textBlock.Foreground = Brushes.Gray; };
+                            textBlock.MouseLeave += (sender, e) => { textBlock.Foreground = Brushes.White; };
                             clienti.Children.Add(textBlock);
                         });
                     }
-                    else
+
+                    if (m.head == "Private Message")
                     {
-                        Application.Current.Dispatcher.Invoke((Action)delegate
+                        Dispatcher.Invoke(() =>
                         {
-                            if (m.head == "Private Message Start")
+                            PrivateMessage p = privateMessages.FirstOrDefault(x => x.Destinatar == m.from);
+                            if (p == null)
                             {
-                                privateMessage = new(m.to, m.from, false);
-                                privateMessage.Show();
-
-                                TextBlock textBlock = new()
-                                {
-                                    Text = $"{m.from}: {m.message}",
-                                    FontSize = 12,
-                                    Foreground = Brushes.White
-                                };
-                                //chat.Children.Add(textBlock);
-                                privateMessage.chat.Children.Add(textBlock);
+                                p = new PrivateMessage(m.from);
+                                privateMessages.Add(p);
                             }
-                            if (m.head == "Private Message")
+                            p.AddMessage(m);
+                            
+
+                            TextBlock t = clienti.Children.OfType<TextBlock>().FirstOrDefault(x => x.Name == m.from);
+
+                            if (t.Text.Contains("("))
                             {
-                                TextBlock textBlock = new()
-                                {
-                                    Text = $"{m.from}: {m.message}",
-                                    FontSize = 12,
-                                    Foreground = Brushes.White
-                                };
-                                privateMessage.chat.Children.Add(textBlock);
+                                int number = int.Parse(t.Text.Split('(')[1].Split(')')[0]);
+                                t.Text = t.Text.Split('(')[0] + "(" + (number + 1) + ")";
                             }
-
+                            else
+                            {
+                                t.Text = t.Text + "(1)";
+                            }
                         });
                     }
+
+
+
                 }
                 catch (Exception e)
                 {
@@ -253,9 +258,38 @@ namespace Client_JSON_WPF
         private void User_Select(object sender, MouseButtonEventArgs e)
         {
             var user = (TextBlock)sender;
+            bool find = false;
             message.to = user.Text;
-            privateMessage = new(message.from, message.to);
-            privateMessage.Show();
+            //see if exist a private message window
+            foreach (PrivateMessage p in privateMessages)
+            {
+                if (p.Destinatar == user.Text)
+                {
+                    if (!p.IsActive)
+                    {
+                        p.Show();
+                        find = true;
+                        return;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Already open");
+                    }
+                }
+            }
+            privateMessage = privateMessages.FirstOrDefault(x => x.Destinatar == user.Text);
+            if (privateMessage != null)
+            {
+                find = true;
+                privateMessage.Show();
+            }
+
+            if (!find)
+            {
+                privateMessage = new PrivateMessage(user.Text);
+                privateMessages.Add(privateMessage);
+                privateMessage.Show();
+            }
         }
 
 
@@ -353,9 +387,14 @@ namespace Client_JSON_WPF
             }
         }
 
-
-
-
-
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            client.Close();
+            foreach (PrivateMessage p in privateMessages)
+            {
+                p.Close();
+            }
+            privateMessages = new List<PrivateMessage>();
+        }
     }
 }
