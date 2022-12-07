@@ -2,7 +2,7 @@
 ### Features:
 - List of connected users
 - Custom username (default system user)
-- Private Message (<i> In work. It currently has some bugs. </i>)
+- Private Message 
 ![Client](https://i.imgur.com/aHmHb8I.png)
 ![Client](https://i.imgur.com/Gtv4nfO.png)
 
