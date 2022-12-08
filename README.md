@@ -1,4 +1,5 @@
 ## _CHAT APP with JSON using TCP Protocol_ 
+The purpose of this application is to send messages to other users.
 ### Features:
 - List of connected users
 - Custom username (default system user)
