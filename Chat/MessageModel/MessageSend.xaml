@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Chat.MessageModel.MessageSend"
+             xmlns:models="clr-namespace:Chat.MessageModel"
+             x:Name="this"
+             x:DataType="models:MessageSend">
+    <VerticalStackLayout>
+        <VerticalStackLayout>
+            <Border BackgroundColor="#3692F1" Padding="20,8,20,8" StrokeShape="RoundRectangle 15,0,15,15"  Stroke="#3692F1">
+                <VerticalStackLayout>
+                    <Label x:Name="User" Text="[username]" TextColor="#CEF1C1" FontAttributes="Bold" Margin="0,0,5,0" />
+                    <Label x:Name="m_message"
+                           Text="[message]"
+                           TextColor="White"
+                           VerticalOptions="Center" 
+                           HorizontalOptions="Center" MaximumWidthRequest="220" />
+                </VerticalStackLayout>
+            </Border>
+        </VerticalStackLayout>
+        <Label x:Name="date" Text="[HH:MM]" VerticalOptions="End" HorizontalOptions="End" FontSize="10" TextColor="LightGray" FontAttributes="Bold" Margin="0,0,0,5"/>
+    </VerticalStackLayout>
+</ContentView>

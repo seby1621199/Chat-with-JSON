@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Chat.HomePage"
+             Title="HomePage" BackgroundColor="#262A31"
+             xmlns:models="clr-namespace:Chat.ChatModel">
+
+
+    <Grid RowDefinitions="30,50,*" BackgroundColor="#262A31">
+        <Label Grid.Row="1" Text="Welcome sebi" FontSize="22" Margin="10,10,0,0"/>
+        <VerticalStackLayout x:Name="ChatList" Grid.Row="2" Margin="0,30,0,0">
+            <!--
+            <models:Chat Name_Chat="Vasile" Message_Chat="salut" />
+            <models:Chat Name_Chat="Sebi" Message_Chat="ce faci" />
+            <models:Chat Name_Chat="George" Message_Chat="ok" />
+            <models:Chat Name_Chat="Mihaita" Message_Chat="c" />
+            <models:Chat Name_Chat="Gabi" Message_Chat="dd" />
+            -->
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

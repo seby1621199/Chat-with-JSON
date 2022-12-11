@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Chat.MainPage" Shell.NavBarIsVisible="False"
+             xmlns:models="clr-namespace:Chat.MessageModel">
+    <Grid x:Name="grid"  RowDefinitions="65,*,63,5" BackgroundColor="#262A31">
+        <!--Header-->
+        <Grid Grid.Row="0" BackgroundColor="Transparent" ColumnDefinitions="0.1*,0.4*,0.3*" >
+            <Image Source="account.png" HeightRequest="30" WidthRequest="30" Grid.Column="0" VerticalOptions="Center"  HorizontalOptions="Center"/>
+            <Entry x:Name="Input_Username" Placeholder=" Username" Grid.Column="1"  FontSize="17" VerticalOptions="Center" HorizontalOptions="Start" TextColor="WhiteSmoke" PlaceholderColor="WhiteSmoke" Margin="0,10,0,0"  Keyboard="Text"  />
+            <ImageButton x:Name="Button_Connect" Source="chat.png" Grid.Column="2" HeightRequest="30" WidthRequest="30" VerticalOptions="Center" HorizontalOptions="End" Margin="0,15,30,0" BackgroundColor="Transparent" ToolTipProperties.Text="Connect" Clicked="Button_Connect_Clicked" />
+        </Grid>
+        
+        <!--Body-->
+        <Border x:Name="Border_Chat" Grid.Row="1" StrokeShape="RoundRectangle 25,25,0,0" Margin="-1,10,-1,0" Stroke="#414449" BackgroundColor="#414449">
+            <Grid Padding="0,0,0,2">
+                <Button Text="Next Page" Clicked="Button_NextPage" IsVisible="False"/>
+                <ScrollView x:Name="Scroll_Chat" VerticalOptions="Start">
+                    <VerticalStackLayout x:Name="chat" Spacing="5" Margin="0,20,0,20" Padding="21,0,21,0">
+                        
+                        <!-->
+                        <models:MessageReceived  HorizontalOptions="Start" From="Mihai" Message="Mesaj de test."/>
+                        <models:MessageReceived  HorizontalOptions="Start" From="George" Message="Test."/>
+                        <models:MessageSend HorizontalOptions="End" From="Sebi" Message="Mesaj de test" />
+                        <models:MessageReceived  HorizontalOptions="Start" From="Vlad" Message="Mesaj de test."/>
+                        <models:MessageSend HorizontalOptions="End" From="Sebi" Message="Mesaj test 1." />
+                        <models:MessageReceived  HorizontalOptions="Start" From="Vlad" Message="Test 2"/>
+                        <models:MessageSend HorizontalOptions="End" From="Sebi" Message="Mesaj test 3." />
+                        <models:MessageSend HorizontalOptions="End" From="Sebi" Message="Mesaj test 4." />
+                        <models:MessageReceived  HorizontalOptions="Start" From="Vlad" Message="Test 5"/>
+                        <models:MessageReceived  HorizontalOptions="Start" From="Alex Meran" Message="Salut"/>
+                        <-->
+                    </VerticalStackLayout>
+                </ScrollView>
+            </Grid>
+        </Border>
+        
+        <!--Send Area-->
+        <!-- color gray a2a6a7-->
+        <Grid Grid.Row="2" ColumnSpacing="12" ColumnDefinitions="*,0.15*" BackgroundColor="#414449" Margin="0,-2,0,0" Padding="17,10,17,10" >
+            
+            <BoxView Color="#262A31"  Grid.Column="1"
+                VerticalOptions="Center"
+                HorizontalOptions="Center"  CornerRadius="0,30,30,0" Margin="-4,0,0,0"/>
+            <BoxView Color="#262A31"  Grid.Column="0"
+                VerticalOptions="Center"
+                HorizontalOptions="Center"  CornerRadius="30,30,30,30"/>
+      
+            <Grid Grid.Column="0">
+                <Entry x:Name="Input_Message" Placeholder="Message"  FontSize="17" VerticalOptions="Center" TextColor="WhiteSmoke" PlaceholderColor="WhiteSmoke" MaxLength="60" Keyboard="Chat" Margin="30,0,10,1" IsTextPredictionEnabled="True" Focused="Input_Message_Focused"  />
+            </Grid>
+            <Grid Grid.Column="1">
+                <ImageButton x:Name="Button_Send" Source="send.png"  HeightRequest="30" WidthRequest="30" VerticalOptions="Center" HorizontalOptions="Center" BackgroundColor="Transparent" ToolTipProperties.Text="Send" Clicked="Button_Send_Clicked" />
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="3" BackgroundColor="#444951"></Grid>
+
+    </Grid>
+
+</ContentPage>
