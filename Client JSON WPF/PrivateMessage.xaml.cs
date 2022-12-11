@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -12,15 +11,14 @@ namespace Client_JSON_WPF
     public partial class PrivateMessage : Window
     {
         public string Destinatar = "";
-        string Expeditor = MainWindow.message.from;
-        bool IsFirstMessage = true;
+        readonly string Expeditor = MainWindow.message.from;
         public PrivateMessage(string to)
         {
             InitializeComponent();
             Destinatar = to;
             User_Txt.Text = "Private Message with " + Destinatar;
-           // Expeditor = from;
-           // IsFirstMessage = first;
+            // Expeditor = from;
+            // IsFirstMessage = first;
             From_Txt.Text = Expeditor;
             // Task.Run(() => { Read(); });
 
@@ -30,11 +28,13 @@ namespace Client_JSON_WPF
         {
             if (txtMessage.Text != "")
             {
-                Message message = new();
-                message.head = "Private Message";
-                message.from = Expeditor;
-                message.to = Destinatar;
-                message.message = txtMessage.Text;
+                Message message = new()
+                {
+                    head = "Private Message",
+                    from = Expeditor,
+                    to = Destinatar,
+                    message = txtMessage.Text
+                };
                 MainWindow.Send(MainWindow.client, message);
                 txtMessage.Text = "";
                 TextBlock textBlock = new()
@@ -43,9 +43,9 @@ namespace Client_JSON_WPF
                     FontSize = 12,
                     Foreground = Brushes.White
                 };
-                
+
                 chat.Children.Add(textBlock);
-                
+
             }
         }
 
@@ -89,5 +89,5 @@ namespace Client_JSON_WPF
             chat.Children.Add(textBlock);
         }
     }
-    
+
 }

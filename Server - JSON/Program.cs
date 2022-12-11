@@ -83,7 +83,7 @@ namespace Server___JSON
                         Program.Send_to_all(message);
                     }
                 }
-                catch (Exception e)
+                catch
                 {
                     Program.clients.Remove(this);
                     Console.WriteLine("User disconnected");
@@ -153,7 +153,10 @@ namespace Server___JSON
         {
 
             Console.Title = "Server";
-            TcpListener listener = new TcpListener(IPAddress.Parse("192.168.1.108"), 7891);
+
+            //create tcplistener on localhost:7891
+            TcpListener listener = new TcpListener(IPAddress.Any, 7891);
+
             listener.Start();
 
 
@@ -175,6 +178,7 @@ namespace Server___JSON
 
                });
             }
+            Console.ReadKey();
         }
 
         public static void Send_to_user(Message message)

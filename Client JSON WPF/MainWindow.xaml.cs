@@ -33,7 +33,7 @@ namespace Client_JSON_WPF
         static List<string> usernames = new();
         public static Message message = new();
         public static TcpClient client = new();
-        public static PrivateMessage privateMessage = null;
+        static PrivateMessage? privateMessage = null;
 
         public MainWindow()
         {
@@ -153,7 +153,6 @@ namespace Client_JSON_WPF
                         {
                             TextBlock t = clienti.Children.OfType<TextBlock>().FirstOrDefault(x => x.Name == m.message);
                             clienti.Children.Remove(t);
-                            //TODO: remove from private messages
                             PrivateMessage p = privateMessages.FirstOrDefault(x => x.Destinatar == m.message);
                             if (p != null)
                             {
@@ -229,26 +228,15 @@ namespace Client_JSON_WPF
                                 privateMessages.Add(p);
                             }
                             p.AddMessage(m);
-                            
 
-                            TextBlock t = clienti.Children.OfType<TextBlock>().FirstOrDefault(x => x.Name == m.from);
-
-                            if (t.Text.Contains("("))
-                            {
-                                int number = int.Parse(t.Text.Split('(')[1].Split(')')[0]);
-                                t.Text = t.Text.Split('(')[0] + "(" + (number + 1) + ")";
-                            }
-                            else
-                            {
-                                t.Text = t.Text + "(1)";
-                            }
                         });
+
                     }
 
 
 
                 }
-                catch (Exception e)
+                catch
                 {
                 }
             }
@@ -325,7 +313,7 @@ namespace Client_JSON_WPF
         private void Connect()
         {
             if (!client.Connected)
-                client.Connect(IPAddress.Parse("192.168.1.108"), 7891);
+                client.Connect(IPAddress.Parse("68.219.106.94"), 7891);
             else
                 MessageBox.Show("Already connected to server");
             if (TxtUsername.Text != "")
