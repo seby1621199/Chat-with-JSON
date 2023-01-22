@@ -13,7 +13,8 @@ The purpose of this application is to send messages to other users.
 
 ![Client](https://i.imgur.com/Gtv4nfO.png)
 ![Client Web](https://i.imgur.com/GD6FhkF.png)
-For online chat check : <a href="http://pavalsebastian.live:8080/chat"></a>
+</br>
+For online chat check : <a href="http://pavalsebastian.live:8080/chat">website</a>
 
 ### Message:
 ```
