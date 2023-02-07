@@ -12,7 +12,7 @@ The purpose of this application is to send messages to other users.
 <br>
 
 ![Client](https://i.imgur.com/Gtv4nfO.png)
-![Client Web](https://i.imgur.com/GD6FhkF.png)
+![Client Web](https://i.imgur.com/25AD6WQ.png)
 </br>
 For online chat check : <a href="http://server.pavalsebastian.live:8080/chat">website</a>
 
