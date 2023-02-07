@@ -1,0 +1,118 @@
+h2{
+    color:red;
+}
+
+.titlu{
+    position: absolute;
+    top:0px;
+}
+
+chat-bubble{
+    width: 100%;
+}
+
+chat-bubble-me{
+    width: 100%;
+}
+
+
+
+.chat-container {
+    height: 80vh;
+    width: 100%;
+    /* padding: 10px; */
+    /* margin: 10px; */
+    display: flex;
+    /* flex-direction: row; */
+    /* flex-wrap: wrap; */
+    justify-content: center;
+    align-items: center;
+}
+
+body{
+    background-color: whitesmoke;
+}
+
+.input-container{
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    align-items: center;
+}
+
+
+.input-text{
+    width: 90%;
+}
+
+.chatarea{
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border-radius: 10px;
+    width: 95%;
+    height: 95%;
+    margin: 10px;
+    padding-left: 25px;
+    padding-top: 25px;
+    overflow-y: auto;
+    background-color: #f8f5f5;
+    border-style: groove;
+    border-color: lightgray;
+}
+
+p{
+    padding: 0px;
+    margin: 5px;
+    color: rgb(72, 69, 69);
+}
+blockquote {
+    /* margin-top: 0.5em; */
+    margin-bottom: 0.75em;
+}
+
+div::-webkit-scrollbar {
+    width: 12px;
+    height: 50%;
+}
+
+div::-webkit-scrollbar-track {
+    height: 100%;
+}
+
+div::-webkit-scrollbar-thumb {
+    background-color: rgb(114, 114, 114);
+    border-radius: 10px;
+    height: 50%;
+}
+
+
+.him{
+    background: #dbdbdb;
+    float: left;
+    font-size: small;
+    margin-bottom: 30px;
+}
+
+.me{
+    margin-bottom: 30px;
+    float: right;
+    background: #137bdf;
+    color: #fff;
+    font-size: small;
+    align-self: flex-end;
+}
+
+.him + .me{
+    border-bottom-right-radius: 5px;
+}
+
+.me + .me{
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+

@@ -4,6 +4,7 @@ package com.chat.application.views;
 import com.chat.application.components.appnav.AppNav;
 import com.chat.application.components.appnav.AppNavItem;
 import com.chat.application.views.empty.EmptyView;
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.html.Footer;
@@ -11,6 +12,7 @@ import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Header;
 import com.vaadin.flow.component.orderedlayout.Scroller;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 
@@ -34,16 +36,16 @@ public class MainLayout extends AppLayout {
         viewTitle = new H2();
         viewTitle.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
 
+
         addToNavbar(true, toggle, viewTitle);
     }
 
     private void addDrawerContent() {
-        H1 appName = new H1("Chatt");
+        H1 appName = new H1("Paval Sebastian");
         appName.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
         Header header = new Header(appName);
 
         Scroller scroller = new Scroller(createNavigation());
-
         addToDrawer(header, scroller, createFooter());
     }
 
@@ -52,8 +54,7 @@ public class MainLayout extends AppLayout {
         // For documentation, visit https://github.com/vaadin/vcf-nav#readme
         AppNav nav = new AppNav();
 
-        nav.addItem(new AppNavItem("Empty", EmptyView.class, "la la-file"));
-
+        nav.addItem(new AppNavItem("Proiecte","https://pavalsebastian.live/", "lumo-icon lumo-icon-briefcase"));
         return nav;
     }
 
