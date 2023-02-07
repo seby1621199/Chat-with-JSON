@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Server - JSON": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}
