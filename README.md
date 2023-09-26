@@ -1,4 +1,7 @@
-## _CHAT APP with JSON using TCP Protocol_ 
+## _CHAT APP with JSON using TCP Protocol_  [Archived]
+Archived, this project has been improved: [new version](https://github.com/seby1621199/Chat)
+
+
 The purpose of this application is to send messages to other users.
 ### Features:
 - List of connected users
